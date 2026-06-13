@@ -11,6 +11,7 @@ import {    Sheet,
   SheetHeader,
   SheetTitle,
   SheetTrigger,} from './ui/sheet';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const user = true;
@@ -41,8 +42,8 @@ const Navbar = () => {
                   <DropdownMenuGroup>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>My learning</DropdownMenuItem>
-                    <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+                    <DropdownMenuItem><Link to="my-learning">My Learning</Link></DropdownMenuItem>
+                    <DropdownMenuItem > <Link to="profile">Edit profile</Link></DropdownMenuItem>
                     <DropdownMenuItem>Log out</DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>Dashboard</DropdownMenuItem>

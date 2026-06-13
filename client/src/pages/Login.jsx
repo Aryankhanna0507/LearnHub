@@ -20,6 +20,7 @@ import {
 import { useLoginUserMutation, useRegisterUserMutation } from "@/feature/api/authApi";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 // Authentication page containing Login and Signup forms
 const Login = () => {
@@ -61,6 +62,7 @@ const [toastShown, setToastShown] = useState(false);
     const action=type=="signup"?registerUser:loginUser;
     await action(inputData);
   };
+  const navigate=useNavigate();
 useEffect(() => {
   if (registerIsSuccess && registerData) {
     toast.success(registerData?.message || "Signup successful.");
@@ -74,6 +76,7 @@ useEffect(() => {
 useEffect(() => {
   if (loginIsSuccess && loginData) {
     toast.success(loginData?.message || "Login successful");
+    navigate("/");
   }
 
   if (loginError) {
@@ -81,8 +84,9 @@ useEffect(() => {
   }
 }, [loginIsSuccess, loginData, loginError]); 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-start sm:justify-center p-4 py-12 overflow-y-auto bg-background">
-      <Tabs defaultValue="Signup" className="w-full max-w-[360px]">
+
+    <div className="flex items-center justify-center min-h-screen pt-12">
+      <Tabs defaultValue="mojo" >
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="Signup">Signup</TabsTrigger>
           <TabsTrigger value="Login">Login</TabsTrigger>
