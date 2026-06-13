@@ -14,6 +14,7 @@ export const register = async (req,res)=>{
     }
     // Check if user already exists
     const user=await User.findOne({email});
+
     if(user){
       return res.status(400).json({
         success:false,
@@ -54,14 +55,6 @@ export const login=async (req,res)=>{
     }
     // Find user by email
     const user=await User.findOne({email});
-    const userWithoutPassword={
-      _id:user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      enrolledCourses: user.enrolledCourses,
-      photoUrl: user.photoUrl
-    }
     if(!user){
       return res.status(400).json({
         success:false,
@@ -76,6 +69,14 @@ export const login=async (req,res)=>{
         message:"Incorrect email or Password"
       })
     }
+    const userWithoutPassword={
+      _id:user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      enrolledCourses: user.enrolledCourses,
+      photoUrl: user.photoUrl
+    }
     // Generate JWT token and login user
     generateToken(
    res,
@@ -86,7 +87,7 @@ export const login=async (req,res)=>{
     console.log(error);
     return res.status(500).json({
       success:false,
-      message:"Failed to register"
+      message:"Failed to login"
     })
   }
 }
