@@ -81,8 +81,8 @@ useEffect(() => {
   }
 }, [loginIsSuccess, loginData, loginError]); 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <Tabs defaultValue="Signup" className="w-87.5">
+    <div className="flex min-h-screen w-full flex-col items-center justify-start sm:justify-center p-4 py-12 overflow-y-auto bg-background">
+      <Tabs defaultValue="Signup" className="w-full max-w-[360px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="Signup">Signup</TabsTrigger>
           <TabsTrigger value="Login">Login</TabsTrigger>
