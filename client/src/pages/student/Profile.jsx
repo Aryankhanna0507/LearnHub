@@ -5,9 +5,13 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Loader2 } from 'lucide-react'
 import React from 'react'
+import Course from './Course'
+import { useLoadUserQuery } from '@/feature/api/authApi'
 
 const Profile = () => {
-  const isLoading = false;
+  const {data,isLoading}=useLoadUserQuery();
+  console.log(data);
+  const enrolledCourses = [1, 2];
   return (
     <div className='max-w-4xl mx-auto my-18 px-8'>
       <h1 className='font-bold text-3xl text-center md:text-left'> PROFILE</h1>
@@ -72,6 +76,16 @@ const Profile = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
+        </div>
+      </div>
+      <div>
+        <h1 className='font-medium text-lg'>courses you are enrolled in</h1>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-5'>
+          {
+            enrolledCourses.length == 0 ? <h1>You haven't enrolled yet</h1> : (
+              enrolledCourses.map((course, index) => <Course key={index} />)
+            )
+          }
         </div>
       </div>
     </div>
