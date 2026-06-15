@@ -128,38 +128,55 @@ export const getUserProfile=async (req,res)=>{
     })
   }
 }
-export const updateProfile =async (req,res)=>{
+export const updateProfile = async (req, res) => {
   try {
-    const userId=req.id;
-    const {name}=req.body;
-    const profilePhoto=req.file;
-    const user =await User.findById(userId);
-    if(!user){
+    const userId = req.id;
+    const { name } = req.body;
+    const profilePhoto = req.file;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
       return res.status(404).json({
-      message:"User not found",
-      success:false
-    })
+        message: "User not found",
+        success: false,
+      });
     }
-    // extract public id of the old image from the url if it exists
-    if(user.photoUrl){
-      const publicId=user.photoUrl.split("/").pop().split(".")[0];//extract public id
-      deleteMediaFromCloudinary(publicId);
+
+    let photoUrl = user.photoUrl; 
+    if (profilePhoto) {
+      // delete old image safely
+      if (user.photoUrl) {
+        const publicId = user.photoUrl.split("/").pop().split(".")[0];
+        await deleteMediaFromCloudinary(publicId);
+      }
+
+      // upload new image
+      const cloudResponse = await uploadMedia(profilePhoto.path);
+      photoUrl = cloudResponse.secure_url;
     }
-    // upload new photo
-    const cloudResponse=await uploadMedia(profilePhoto.path)
-    const photoUrl=cloudResponse.secure_url;
-    const updatedData={name,photoUrl};
-    const updatedUser=await User.findByIdAndUpdate(userId,updatedData,{new:true}).select("-password");
+
+    // update only changed fields
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        name: name || user.name,
+        photoUrl,
+      },
+      { new: true }
+    ).select("-password");
+
     return res.status(200).json({
-      success:true,
-      user:updatedUser,
-      message:"profile updated successfully"
-    })
+      success: true,
+      user: updatedUser,
+      message: "Profile updated successfully",
+    });
+
   } catch (error) {
-     console.log(error);
+    console.log(error);
     return res.status(500).json({
-      success:false,
-      message:"Failed to update user"
-    })
+      success: false,
+      message: "Failed to update user",
+    });
   }
-}
+};
