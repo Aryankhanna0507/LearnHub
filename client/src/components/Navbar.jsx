@@ -1,5 +1,5 @@
 import { Menu, School } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from './ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from './ui/avatar';
@@ -11,11 +11,26 @@ import {    Sheet,
   SheetHeader,
   SheetTitle,
   SheetTrigger,} from './ui/sheet';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useLogoutUserMutation } from '@/feature/api/authApi';
+import { toast } from 'sonner';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
-  const user = true;
- 
+  const { user }=useSelector(store=>store.auth);
+ const [logoutUser,{data,isSuccess}]=useLogoutUserMutation();
+ const logoutHandler=async ()=>{
+  await logoutUser();
+ }
+//  console.log(user)
+ const navigate=useNavigate();
+
+ useEffect(() => {
+    if (isSuccess) {
+      navigate("/login");
+      toast.success(data?.message || "User log out.");
+    }
+  }, [isSuccess]);
   return (
     <div className='h-12 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10'>
       {/* Desktop */}
@@ -32,9 +47,8 @@ const Navbar = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                    <AvatarImage src={user?.photoUrl || "https://github.com/shadcn.png"} alt="@shadcn" />
                     <AvatarFallback>CN</AvatarFallback>
-                    <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                   </Avatar>
                 </DropdownMenuTrigger>
 
@@ -43,16 +57,23 @@ const Navbar = () => {
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem><Link to="my-learning">My Learning</Link></DropdownMenuItem>
-                    <DropdownMenuItem > <Link to="profile">Edit profile</Link></DropdownMenuItem>
-                    <DropdownMenuItem>Log out</DropdownMenuItem>
-                    <DropdownMenuSeparator />
+                    <DropdownMenuItem > <Link to="profile">Edit profile</Link></DropdownMenuItem>{" "}
+                    <DropdownMenuItem onClick={logoutHandler}>Log out</DropdownMenuItem>
+                    {
+                      user?.role==="instructor" && (
+                        <>
+                          <DropdownMenuSeparator />
                     <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                        </>
+                      )
+                    }
+                  
                   </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (<div className='flex items-center gap-2'>
-              <Button variant='outline'>Login</Button>
-              <Button>Signup</Button>
+              <Button variant='outline'onClick={()=>navigate("/login")} >Login</Button>
+              <Button onClick={()=>navigate("/login")}>Signup</Button>
             </div>
             )}
           <DarkMode />

@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Progress } from '@/components/ui/progress'
 import { Switch } from '@/components/ui/switch'
-import { useEditLectureMutation, useRemoveLectureMutation } from '@/feature/api/courseApi'
+import { useEditLectureMutation, useGetLectureByIdQuery, useRemoveLectureMutation } from '@/feature/api/courseApi'
 import axios from 'axios'
 import { Loader2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
@@ -23,6 +23,15 @@ const LectureTab = () => {
   const params = useParams();
   const { courseId, lectureId } = params;
   const [removeLecture,{isLoading:removeLoading,isSuccess:removeSuccess,data:removeData}]=useRemoveLectureMutation()
+  const {data:lectureData}=useGetLectureByIdQuery(lectureId);
+  const lecture=lectureData?.lecture;
+   useEffect(()=>{
+    if(lecture){
+      setLectureTitle(lecture.lectureTitle);
+      setIsFree(lecture.isPreviewFree);
+      setUploadVideoInfo(lecture.videoInfo)
+    }
+   },[lecture])
   const fileChangeHandler = async (e) => {
     const file = e.target.files[0];
     if (file) {

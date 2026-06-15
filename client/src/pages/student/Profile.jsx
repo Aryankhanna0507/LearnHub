@@ -43,14 +43,14 @@ const Profile = () => {
   }, [data]);
   if (isLoading) return <h1>Profile Loading</h1>
   console.log(data)
-  const { user } = data;
+  const user = data && data.user;
   return (
     <div className='max-w-4xl mx-auto my-18 px-8'>
       <h1 className='font-bold text-3xl text-center md:text-left'> PROFILE</h1>
       <div className='flex flex-col md:flex-row items-center md:items-start gap-8 my-3'>
         <div className='flex flex-col items-center'>
           <Avatar className={"h-24 w-24 md:h-32 md:w-32 mb--4"}>
-            <AvatarImage src={user.photoUrl || "https://github.com/shadcn.png"} alt="@shadcn" />
+            <AvatarImage src={user?.photoUrl || "https://github.com/shadcn.png"} alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>
@@ -58,19 +58,19 @@ const Profile = () => {
           <div className='mb-2'>
             <h2 className='font-semibold text-gray-900 dark:text-gray-100 text-2xl'>
               Name:
-              <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{user.name}</span>
+              <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{user?.name}</span>
             </h2>
           </div>
           <div className='mb-2'>
             <h2 className='font-semibold text-gray-900 dark:text-gray-100 text-2xl'>
               Email:
-              <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{user.email}</span>
+              <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{user?.email}</span>
             </h2>
           </div>
           <div className='mb-2'>
             <h2 className='font-semibold text-gray-900 dark:text-gray-100 text-2xl'>
               Role:
-              <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{user.role.toUpperCase()}</span>
+              <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{user?.role.toUpperCase()}</span>
             </h2>
           </div>
           <Dialog>
@@ -114,8 +114,8 @@ const Profile = () => {
         <h1 className='font-medium text-lg'>courses you are enrolled in</h1>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-5'>
           {
-            user.enrolledCourses.length == 0 ? <h1>You haven't enrolled yet</h1> : (
-              user.enrolledCourses.map((course) => <Course course={course} key={course._id} />)
+            user?.enrolledCourses.length == 0 ? <h1>You haven't enrolled yet</h1> : (
+              user?.enrolledCourses.map((course) => <Course course={course} key={course._id} />)
             )
           }
         </div>
