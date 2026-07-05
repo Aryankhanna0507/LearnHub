@@ -86,7 +86,7 @@ useEffect(() => {
   return (
 
     <div className="flex items-center justify-center min-h-screen pt-12">
-      <Tabs defaultValue="mojo" >
+      <Tabs defaultValue="Signup" >
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="Signup">Signup</TabsTrigger>
           <TabsTrigger value="Login">Login</TabsTrigger>
