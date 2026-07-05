@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit"
 import rootReducer from "./rootReducer.js"
 import { authApi } from "../feature/api/authApi"
 import { courseApi } from "@/feature/api/courseApi.js";
+import { purchaseApi } from "@/feature/api/purchaseApi.js";
 
 // Redux store setup
 export const appStore = configureStore({
@@ -9,7 +10,7 @@ export const appStore = configureStore({
 
   // RTK Query middleware add (important for API caching, fetching)
   middleware: (defaultMiddleware) =>
-    defaultMiddleware().concat(authApi.middleware,courseApi.middleware)
+    defaultMiddleware().concat(authApi.middleware,courseApi.middleware,purchaseApi.middleware)
 })
 const initializeApp = async () => {
   try {
