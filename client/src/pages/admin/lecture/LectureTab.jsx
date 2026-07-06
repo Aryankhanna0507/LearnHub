@@ -29,7 +29,10 @@ const LectureTab = () => {
     if(lecture){
       setLectureTitle(lecture.lectureTitle);
       setIsFree(lecture.isPreviewFree);
-      setUploadVideoInfo(lecture.videoInfo)
+      setUploadVideoInfo({
+      videoUrl:lecture.videoUrl,
+      publicId:lecture.publicId
+     })
     }
    },[lecture])
   const fileChangeHandler = async (e) => {
@@ -47,7 +50,7 @@ const LectureTab = () => {
         if (res.data.success) {
           console.log(res);
 
-          setUploadVideoInfo({ videoUrl: res.data.data.url, publicId: res.data.data.public_id })
+          setUploadVideoInfo({ videoUrl: res.data.data.secure_url, publicId: res.data.data.public_id })
           setBtnDisable(false);
           toast.success(res.data.message)
         }
