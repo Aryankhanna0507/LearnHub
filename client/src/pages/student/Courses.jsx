@@ -9,7 +9,7 @@ const Courses = () => {
 
   
   return (
-    <div className='bg-gray-50'>
+    <div className='bg-gray-50 dark:bg-[#141414]'>
       <div className='max-w-7xl mx-auto p-6 '>
       <h2 className='font-bold text-xl text-center mb-4'>Our Courses</h2>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>

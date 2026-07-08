@@ -19,6 +19,7 @@ import CourseProgress from "./pages/student/CourseProgress";
 import SearchPage from "./pages/student/searchPage";
 import { AdminRoute, AuthenticatedUser, ProtectedRoute } from "./components/ui/ProtectedRoute";
 import PurchaseCourseProtectedRoute from "./components/ui/PurchaseCourseProtectedRoute";
+import { ThemeProvider } from "./components/ThemeProvider";
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -96,7 +97,9 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <main>
+      <ThemeProvider>
       <RouterProvider router={appRouter} />
+      </ThemeProvider>
     </main>
   );
 }
